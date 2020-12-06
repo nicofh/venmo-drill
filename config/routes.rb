@@ -10,13 +10,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1, defaults: { format: :json } do
-      get :status, to: 'api#status'
-
-      devise_scope :user do
-        resource :user, only: %i[update show]
-      end
       resources :settings, only: [] do
         get :must_update, on: :collection
+      end
+
+      resources :users, only: %i[update show] do
+        scope module: :users do
+          resources :payment, only: [:create], controller: :payments
+        end
       end
     end
   end

@@ -4,8 +4,7 @@ module Api
       include Api::Concerns::ActAsApiRequest
       include DeviseTokenAuth::Concerns::SetUserByToken
 
-      before_action :authenticate_user!, except: :status
-      skip_after_action :verify_authorized, only: :status
+      helper_method :current_user
 
       layout false
       respond_to :json
@@ -13,12 +12,17 @@ module Api
       rescue_from ActiveRecord::RecordNotFound,        with: :render_not_found
       rescue_from ActiveRecord::RecordInvalid,         with: :render_record_invalid
       rescue_from ActionController::ParameterMissing,  with: :render_parameter_missing
+      rescue_from VenmoError,                          with: :render_venmo_error
 
       def status
         render json: { online: true }
       end
 
       private
+
+      def current_user
+        @current_user ||= User.find(params[:id] || params[:user_id])
+      end
 
       def render_not_found(exception)
         logger.info { exception } # for logging
@@ -33,6 +37,11 @@ module Api
       def render_parameter_missing(exception)
         logger.info { exception } # for logging
         render json: { error: I18n.t('api.errors.missing_param') }, status: :unprocessable_entity
+      end
+
+      def render_venmo_error(exception)
+        logger.info { exception }
+        render json: { errors: exception.message }, status: :bad_request
       end
     end
   end

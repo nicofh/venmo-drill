@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_171441) do
+ActiveRecord::Schema.define(version: 2020_12_04_201653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -94,12 +94,41 @@ ActiveRecord::Schema.define(version: 2020_07_16_171441) do
     t.index ["error_group_id"], name: "index_exception_hunter_errors_on_error_group_id"
   end
 
-  create_table "settings", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "value"
+  create_table "external_payment_sources", force: :cascade do |t|
+    t.integer "source_type", default: 0, null: false
+    t.integer "account", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_settings_on_key", unique: true
+    t.index ["user_id"], name: "index_external_payment_sources_on_user_id"
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.bigint "first_friend_id"
+    t.bigint "second_friend_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["first_friend_id"], name: "index_friendships_on_first_friend_id"
+    t.index ["second_friend_id"], name: "index_friendships_on_second_friend_id"
+  end
+
+  create_table "payment_accounts", force: :cascade do |t|
+    t.float "balance", default: 0.0, null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_payment_accounts_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.bigint "receiver_id"
+    t.bigint "sender_id"
+    t.float "amount", null: false
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["receiver_id"], name: "index_payments_on_receiver_id"
+    t.index ["sender_id"], name: "index_payments_on_sender_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -127,4 +156,8 @@ ActiveRecord::Schema.define(version: 2020_07_16_171441) do
   end
 
   add_foreign_key "exception_hunter_errors", "exception_hunter_error_groups", column: "error_group_id"
+  add_foreign_key "friendships", "users", column: "first_friend_id"
+  add_foreign_key "friendships", "users", column: "second_friend_id"
+  add_foreign_key "payments", "payment_accounts", column: "receiver_id"
+  add_foreign_key "payments", "payment_accounts", column: "sender_id"
 end

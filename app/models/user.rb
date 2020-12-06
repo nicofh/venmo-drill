@@ -36,9 +36,24 @@ class User < ApplicationRecord
          :recoverable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
+  has_one :external_payment_source, dependent: :destroy
+  has_one :payment_account, dependent: :destroy
+
+  has_many :sent_friendships, class_name: 'Friendship', foreign_key: :first_friend_id,
+                              inverse_of: :first_friend,
+                              dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', foreign_key: :second_friend_id,
+                                  inverse_of: :second_friend,
+                                  dependent: :destroy
+  has_many :sent_friends, through: :sent_friendships, source: :second_friend
+  has_many :received_friends, through: :received_friendships, source: :first_friend
+
   validates :uid, uniqueness: { scope: :provider }
 
   before_validation :init_uid
+  after_commit :create_payment_account
+
+  delegate :balance, to: :payment_account
 
   def full_name
     return username if first_name.blank?
@@ -53,7 +68,15 @@ class User < ApplicationRecord
     end
   end
 
+  def friends
+    sent_friends + received_friends
+  end
+
   private
+
+  def create_payment_account
+    self.payment_account = PaymentAccount.create!(user: self)
+  end
 
   def init_uid
     self.uid = email if uid.blank? && provider == 'email'
