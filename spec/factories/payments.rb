@@ -17,6 +17,7 @@
 #
 FactoryBot.define do
   factory :payment do
-    amount { Faker::Number.number(digits: 3) }
+    amount      { Faker::Number.number(digits: 3) }
+    description { Faker::TvShows::Friends.quote }
   end
 end

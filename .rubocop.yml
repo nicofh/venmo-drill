@@ -31,3 +31,7 @@ Rails/Delegate:
 Rails/UniqueValidationWithoutIndex:
   Exclude:
     - app/models/external_payment_source.rb
+
+Rails/PluckId:
+  Exclude:
+    - app/services/feed_service.rb
