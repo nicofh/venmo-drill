@@ -27,3 +27,7 @@ Layout/LineLength:
 Rails/Delegate:
   Exclude:
     - app/controllers/api/concerns/act_as_api_request.rb
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - app/models/external_payment_source.rb

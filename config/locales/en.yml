@@ -1,4 +1,3 @@
----
 en:
   active_admin:
     dashboard: Main page
@@ -10,3 +9,5 @@ en:
       invalid_content_type: Invalid content type header
       missing_param: A required param is missing
       not_found: Couldn't find the record
+      payment:
+        not_a_friend: Receiver is not a friend of sender
