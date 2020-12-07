@@ -19,10 +19,6 @@ class Friendship < ApplicationRecord
 
   validate :friendship_already_exists, on: :create
 
-  scope :friendships_of, lambda { |user|
-    where(first_friend: user).or(where(second_friend: user))
-  }
-
   private
 
   def friendship_already_exists

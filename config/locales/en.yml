@@ -11,3 +11,5 @@ en:
       not_found: Couldn't find the record
       payment:
         not_a_friend: Receiver is not a friend of sender
+    payment:
+      title: '%{sender} paid %{receiver} on %{timestamp} - %{description}'

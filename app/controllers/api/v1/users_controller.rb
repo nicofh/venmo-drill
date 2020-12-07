@@ -10,6 +10,10 @@ module Api
 
       def balance; end
 
+      def feed
+        @payments = FeedService.new(current_user).feed.page(params[:page])
+      end
+
       private
 
       def user_params

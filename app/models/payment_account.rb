@@ -22,6 +22,8 @@ class PaymentAccount < ApplicationRecord
                                inverse_of: :receiver_id,
                                dependent: :destroy
 
+  delegate :first_name, to: :user
+
   def add_to_balance(amount)
     self.balance += amount
     save!
