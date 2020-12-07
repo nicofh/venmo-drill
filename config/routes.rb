@@ -14,7 +14,10 @@ Rails.application.routes.draw do
         get :must_update, on: :collection
       end
 
-      resources :users, only: %i[update show] do
+      resources :users, only: %i[update show balance] do
+        member do
+          get :balance
+        end
         scope module: :users do
           resources :payment, only: [:create], controller: :payments
         end

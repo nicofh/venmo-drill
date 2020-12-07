@@ -1,8 +1,6 @@
 module Api
   module V1
     class UsersController < Api::V1::ApiController
-      before_action :auth_user
-
       def show; end
 
       def update
@@ -10,11 +8,9 @@ module Api
         render :show
       end
 
-      private
+      def balance; end
 
-      def auth_user
-        authorize current_user
-      end
+      private
 
       def user_params
         params.require(:user).permit(:username, :first_name, :last_name, :email)
