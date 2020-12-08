@@ -128,6 +128,13 @@ This project has 3 main services.
 
 - FeedService will return all the payments that a given user should see on their feed. Such collection will be composed by his own payments plus his friends payments.
 
+## RSpec
+
+In order to cover basic behaviour, validations and edge cases; unit tests were added for services files:
+- external_transfer_service_spec.rb
+- feed_service_spec.rb
+- payment_service_spec.rb
+
 ## Seed
 
 After runnning `rake db:seed` a sample data will be loaded to the database. This data is composed by
@@ -135,6 +142,7 @@ After runnning `rake db:seed` a sample data will be loaded to the database. This
 
 This example allows to test feed feature reach. If we hit GET Feed for `user_1`, we should see `user_1` and `user_2` activity only. On the other hand if we do that for `user_2` or `user_3`, we should see all activity.
 Finally there should be no activity on `user_5`'s feed.
+
 
 ## Postman Collection
 

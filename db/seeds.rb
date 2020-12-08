@@ -1,5 +1,6 @@
 # user1 is friends with user2, user2 with user3, and user3 with user4
 # user1 pays to user2, user2 to user3, and user3 to user4
+# user5 does not have any friends nor payments
 user1 = User.create!(email: 'user1@example.com', password: 'password',
                      first_name: 'John', last_name: 'Florence')
 user1.payment_account.update!(balance: 3000)
@@ -17,6 +18,10 @@ ExternalPaymentSource.create!(user: user3, source_type: 'wells_fargo', account: 
 user4 = User.create!(email: 'user4@example.com', password: 'password',
                      first_name: 'Mason', last_name: 'Ho')
 ExternalPaymentSource.create!(user: user4, source_type: 'visa', account: '234561')
+
+user5 = User.create!(email: 'user5@example.com', password: 'password',
+                     first_name: 'Joe', last_name: 'Lonely')
+ExternalPaymentSource.create!(user: user5, source_type: 'visa', account: '99999')
 
 Friendship.create!(first_friend: user1, second_friend: user2)
 Friendship.create!(first_friend: user2, second_friend: user3)
