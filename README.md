@@ -147,5 +147,3 @@ Finally there should be no activity on `user_5`'s feed.
 ## Postman Collection
 
 Download [venmo-drill Postman collection](https://github.com/nicofh/venmo-drill/blob/master/Venmo.postman_collection.json) and import to Postman.
-
-[<img src="https://s3-us-west-1.amazonaws.com/rootstrap.com/img/rs.png" width="100"/>](http://www.rootstrap.com)
